@@ -1,20 +1,44 @@
 # frozen_string_literal: true
 
-# name: discourse-plugin-name
-# about: TODO
+# name: quipper-monitoring
+# about: Enable site monitoring for sentry and newrelic
 # version: 0.0.1
 # authors: Discourse
-# url: TODO
-# required_version: 2.7.0
+# required_version: 3.0
 
-enabled_site_setting :plugin_name_enabled
+# once newrelic config and gem installed it's ready to monitor
 
-module ::MyPluginModule
-  PLUGIN_NAME = "discourse-plugin-name"
-end
+ENV['NRCONFIG'] ||= File.expand_path('../newrelic.yml', __FILE__)
+gem 'newrelic_rpm', '9.0.0'
 
-require_relative "lib/my_plugin_module/engine"
+gem 'sentry-ruby', '5.8.0'
+gem 'sentry-rails', '5.8.0'
+
+enabled_site_setting :quipper_monitoring
 
 after_initialize do
+  if SiteSetting.quipper_monitoring
+
+    if SiteSetting.quipper_sentry && SiteSetting.quipper_sentry_dsn.present?
+      Sentry.init do |config|
+        config.dsn = SiteSetting.quipper_sentry_dsn
+        config.breadcrumbs_logger = [:active_support_logger, :http_logger]
+      end
+
+      class ::ApplicationController
+        def rescue_with_handler(exception)
+          handle_exception(exception)
+          # super(exception)
+        end
+    
+        private
+    
+        def handle_exception(exception)
+          Sentry.set_tags(context: "#{controller_path.gsub('/', '_').camelize.capitalize}Controller##{params[:action]}")
+          Sentry.capture_message(exception.message)
+        end
+      end
+    end
+  end
   # Code which should run after Rails has finished booting
 end

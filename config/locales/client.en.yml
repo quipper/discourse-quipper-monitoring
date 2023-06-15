@@ -1,4 +1,8 @@
 en:
   js:
-    discourse_plugin_name:
+    quipper_monitoring:
+      placeholder: placeholder
+    quipper_sentry:
+      placeholder: placeholder
+    quipper_sentry_dsn:
       placeholder: placeholder

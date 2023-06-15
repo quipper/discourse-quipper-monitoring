@@ -1,4 +1,12 @@
 plugins:
-  plugin_name_enabled:
-    default: true
+  quipper_monitoring:
+    default: false
     client: true
+  quipper_sentry:
+    default: false
+    client: true
+  quipper_sentry_dsn:
+    default: ""
+    client: true
+  
+  
