@@ -1,5 +1,5 @@
 en:
   site_settings:
-    quipper_monitoring: "Monitoring configrations"
-    quipper_sentry: "Enable sentry monitoring"
-    quipper_sentry_dsn: "sentry dsn"
+    quipper_monitoring: "Monitoring configurations"
+    quipper_sentry: "Enable Sentry monitoring"
+    quipper_sentry_dsn: "Sentry DSN"
