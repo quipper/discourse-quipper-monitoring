@@ -1,11 +1,9 @@
-# **Qipper Monitoring** Plugin
+# **Quipper Monitoring** Plugin
 
 **Plugin Summary**
 
-This plugin contains sentry, newrelic gem and also ping endpoint.
+This plugin includes the New Relic and Sentry gems.
 
-For newrelic once you complate your config.yml it will work without any admin configurations
+For New Relic, once you complete the config.yml, it will start working without requiring any additional admin configurations.
 
-for sentry you need to enable it and add the key on admin settings
-
-pingdom endpoint life on {host}/quipper-monitoring/ping
+For Sentry, you will need to enable it and add the key in the admin settings.
