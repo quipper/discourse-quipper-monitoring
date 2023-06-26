@@ -1,6 +1,6 @@
 plugins:
   quipper_monitoring:
-    default: false
+    default: true
     client: true
   quipper_sentry:
     default: false
