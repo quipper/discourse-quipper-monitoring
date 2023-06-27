@@ -3,7 +3,7 @@ plugins:
     default: true
     client: true
   quipper_sentry:
-    default: false
+    default: true
     client: true
   quipper_sentry_dsn:
     default: ""
