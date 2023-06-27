@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# name: quipper-monitoring
+# name: discourse-quipper-monitoring
 # about: Enable site monitoring for sentry and newrelic
 # version: 0.0.1
 # authors: Discourse
