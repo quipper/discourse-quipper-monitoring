@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# name: quipper-monitoring
+# name: discourse-quipper-monitoring
 # about: Enable site monitoring for sentry and newrelic
-# version: 0.0.1
+# version: 0.0.2
 # authors: Discourse
 # required_version: 3.0
 
@@ -35,12 +35,31 @@ after_initialize do
       end
 
       class ::ApplicationController
+        prepend_before_action :check_headers
+
         def rescue_with_handler(exception)
           handle_exception(exception)
           super
         end
+
+        def check_headers
+          if request.headers["User-Agent"] == "Quipper/Collab-Discourse 2.0"
+            sentry_message("RequestFromCollabDiscourse", { sent_headers: request.headers.inspect, request_string: request.inspect }.inspect)
+
+            if request.headers["Api-Username"].present && request.headers["Api-Key"].blank?
+              sentry_message("EmptyApiKey", { sent_headers: request.headers.inspect, request_string: request.inspect }.inspect )
+            end
+          end
+        end
     
         private
+
+        def sentry_message(ctx, msg)
+          if defined?(Sentry)
+            Sentry.set_tags(context: ctx)
+            Sentry.capture_message(msg)
+          end
+        end
     
         def handle_exception(exception)
           fingerprint = [
