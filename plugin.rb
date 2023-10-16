@@ -46,7 +46,7 @@ after_initialize do
           if request.headers["User-Agent"] == "Quipper/Collab-Discourse 2.0"
             sentry_message("RequestFromCollabDiscourse", { sent_headers: request.headers.inspect, request_string: request.inspect }.inspect)
 
-            if request.headers["Api-Username"].present && request.headers["Api-Key"].blank?
+            if request.headers["Api-Username"].present? && request.headers["Api-Key"].blank?
               sentry_message("EmptyApiKey", { sent_headers: request.headers.inspect, request_string: request.inspect }.inspect )
             end
           end
