@@ -43,11 +43,12 @@ after_initialize do
         end
 
         def check_headers
-          if request.headers["User-Agent"] == "Quipper/Collab-Discourse 2.0"
-            sentry_message("RequestFromCollabDiscourse", { sent_headers: request.env.inspect, request_string: request.inspect }.inspect)
+          if request.headers['ORIGINAL_FULLPATH'].include?('/l/latest') && request.headers["User-Agent"] == "Quipper/Collab-Discourse 2.0"
+            sent_headers = request.headers.env.reject { |key| key.to_s.include?('.') }
+            sentry_message("RequestFromCollabDiscourse", sent_headers.inspect)
 
             if request.headers["Api-Username"].present? && request.headers["Api-Key"].blank?
-              sentry_message("EmptyApiKey", { sent_headers: request.env.inspect, request_string: request.inspect }.inspect )
+              sentry_message("EmptyApiKey", sent_headers.inspect)
             end
           end
         end
